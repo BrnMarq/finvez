@@ -78,8 +78,16 @@ export default function HistoryScreen() {
               <Text className="text-white text-4xl font-black">
                 {formatCurrency(currentAccount.balance || 0, currentAccount.symbol || 'USD')}
               </Text>
-              <View className="bg-white/20 self-start px-3 py-1 rounded-full mt-3">
-                 <Text className="text-white font-bold text-xs">{currentAccount.name}</Text>
+              <View className="flex-row items-center mt-4">
+                <View className="bg-white/20 px-3 py-1 rounded-full mr-2">
+                   <Text className="text-white font-bold text-xs">{currentAccount.name}</Text>
+                </View>
+                <TouchableOpacity 
+                  onPress={() => router.push(`/account/${id}/adjust`)}
+                  className="bg-white/20 px-3 py-1 rounded-full flex-row items-center"
+                >
+                  <Text className="text-white font-bold text-xs">Adjust</Text>
+                </TouchableOpacity>
               </View>
             </View>
           ) : null

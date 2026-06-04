@@ -62,16 +62,20 @@ function RootLayoutNav() {
       <Stack.Screen name="index" options={{ title: "Mis Cuentas" }} />
       <Stack.Screen
         name="account/[id]/index"
-        options={{ title: "Historial" }}
+        options={{ title: "History" }}
       />
       <Stack.Screen
         name="account/[id]/scanner"
-        options={{ title: "Scanner AI" }}
+        options={{ title: "AI Scanner" }}
       />
-      <Stack.Screen name="transaction/[id]" options={{ title: "Detalle" }} />
+      <Stack.Screen
+        name="account/[id]/adjust"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="transaction/[id]" options={{ title: "Details" }} />
       <Stack.Screen
         name="transaction/[id]/edit"
-        options={{ title: "Editar Transaccion" }}
+        options={{ title: "Edit Transaction" }}
       />
       <Stack.Screen name="auth/login" options={{ headerShown: false }} />
       <Stack.Screen name="auth/register" options={{ headerShown: false }} />
