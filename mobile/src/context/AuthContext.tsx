@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { DeviceEventEmitter } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import * as Sentry from '@sentry/react-native';
 import client from '@/src/api/client';
@@ -28,6 +29,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     loadStoredAuth();
+
+    // Listen for unauthorized API requests globally
+    const subscription = DeviceEventEmitter.addListener('auth.unauthorized', () => {
+      logger.warn('auth.unauthorized event received, signing out...');
+      signOut();
+    });
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   async function loadStoredAuth() {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import * as Sentry from "@sentry/react-native";
+import { DeviceEventEmitter } from "react-native";
 import { logger } from "@/src/utils/logger";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
@@ -54,6 +55,13 @@ client.interceptors.response.use(
         });
         
         Sentry.captureException(error, { extra: errorContext });
+
+        // If the error is 401 Unauthorized, trigger global logout event
+        if (error.response.status === 401) {
+          logger.warn("401 Unauthorized detected. Emitting auth.unauthorized event.", errorContext);
+          DeviceEventEmitter.emit("auth.unauthorized");
+          return Promise.reject(new Error("Tu sesión ha expirado. Por favor, inicia sesión nuevamente."));
+        }
       } else if (error.request) {
         errorMessage += ` | Status: No response received (Network Error)`;
         errorContext = {
