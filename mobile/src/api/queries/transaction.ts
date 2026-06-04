@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import client from '../client';
+import { ACCOUNT_KEYS } from './account';
 
 export const TRANSACTION_KEYS = {
   all: ['transactions'] as const,
@@ -49,6 +50,8 @@ export function useUpdateTransaction(id: string | number | string[] | undefined)
       // Invalidate both the detail view and the list views
       queryClient.invalidateQueries({ queryKey: TRANSACTION_KEYS.detail(idStr) });
       queryClient.invalidateQueries({ queryKey: TRANSACTION_KEYS.all });
+      // Invalidate accounts to refresh the dynamic balance
+      queryClient.invalidateQueries({ queryKey: ACCOUNT_KEYS.all });
     },
   });
 }
@@ -63,6 +66,8 @@ export function useCreateManualTransaction() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TRANSACTION_KEYS.all });
+      // Invalidate accounts to refresh the dynamic balance
+      queryClient.invalidateQueries({ queryKey: ACCOUNT_KEYS.all });
     },
   });
 }
@@ -81,6 +86,9 @@ export function useProcessMedia() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TRANSACTION_KEYS.all });
+      // Invalidate accounts to refresh the dynamic balance
+      queryClient.invalidateQueries({ queryKey: ACCOUNT_KEYS.all });
     },
   });
 }
+
