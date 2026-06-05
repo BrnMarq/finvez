@@ -25,15 +25,16 @@ export default function AdjustBalanceScreen() {
   const createManualMutation = useCreateManualTransaction();
   const { data: accounts = [] } = useAccounts();
   const currentAccount = accounts.find((a: any) => a.id.toString() === id);
-  
+
   const symbol = currentAccount?.symbol || "USD";
   const currentBalance = currentAccount?.balance || 0;
 
   const [actualBalanceStr, setActualBalanceStr] = useState("");
 
-  const actualBalance = parseFloat(actualBalanceStr.replace(/[^0-9.-]/g, "")) || 0;
+  const actualBalance =
+    parseFloat(actualBalanceStr.replace(/[^0-9.-]/g, "")) || 0;
   const difference = actualBalance - currentBalance;
-  
+
   const flow = difference > 0 ? "IN" : "OUT";
   const absDifference = Math.abs(difference);
 
@@ -45,7 +46,7 @@ export default function AdjustBalanceScreen() {
 
     if (absDifference === 0) {
       Alert.alert("Info", "The balance matches, no adjustment needed.", [
-        { text: "OK", onPress: () => router.back() }
+        { text: "OK", onPress: () => router.back() },
       ]);
       return;
     }
@@ -62,21 +63,21 @@ export default function AdjustBalanceScreen() {
           quantity: 1,
           unitPrice: absDifference,
           totalPrice: absDifference,
-        }
+        },
       ],
     };
 
     createManualMutation.mutate(payload, {
       onSuccess: () => {
         Alert.alert("Success", "Balance adjusted successfully", [
-          { text: "OK", onPress: () => router.navigate(`/account/${id}`) },
+          { text: "OK", onPress: () => router.back() },
         ]);
       },
       onError: (error: any) => {
         logger.error("Error adjusting balance", { error });
         Sentry.captureException(error);
         Alert.alert("Error", "Could not adjust the balance.");
-      }
+      },
     });
   };
 
@@ -131,16 +132,21 @@ export default function AdjustBalanceScreen() {
           </View>
 
           {actualBalanceStr !== "" && (
-            <View className={`p-4 rounded-2xl border ${difference > 0 ? 'bg-emerald-50 border-emerald-100' : difference < 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-100'}`}>
+            <View
+              className={`p-4 rounded-2xl border ${difference > 0 ? "bg-emerald-50 border-emerald-100" : difference < 0 ? "bg-red-50 border-red-100" : "bg-gray-50 border-gray-100"}`}
+            >
               <Text className="text-center text-sm text-gray-600 mb-1">
                 Adjustment required:
               </Text>
-              <Text className={`text-center text-xl font-bold ${difference > 0 ? 'text-emerald-600' : difference < 0 ? 'text-red-600' : 'text-gray-600'}`}>
-                {difference > 0 ? '+' : difference < 0 ? '-' : ''}
+              <Text
+                className={`text-center text-xl font-bold ${difference > 0 ? "text-emerald-600" : difference < 0 ? "text-red-600" : "text-gray-600"}`}
+              >
+                {difference > 0 ? "+" : difference < 0 ? "-" : ""}
                 {formatCurrency(absDifference, symbol)}
               </Text>
               <Text className="text-center text-xs text-gray-500 mt-2">
-                This will create a single {flow === 'IN' ? 'Income' : 'Expense'} transaction named "Balance Correction" to sync your account.
+                This will create a single {flow === "IN" ? "Income" : "Expense"}{" "}
+                transaction named "Balance Correction" to sync your account.
               </Text>
             </View>
           )}
