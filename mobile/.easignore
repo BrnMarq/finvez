@@ -1,8 +1,3 @@
-# Ignore backend/API directory completely to prevent EAS from trying to resolve
-# its dependencies and running its postinstall scripts (like prisma generate)
-../api/
-
-# Standard Expo ignores
 node_modules/
 .expo/
 dist/
