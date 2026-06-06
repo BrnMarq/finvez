@@ -59,9 +59,7 @@
       [
         "@sentry/react-native/expo",
         {
-          "url": "https://sentry.io/",
-          "project": "Ledcom",
-          "organization": "Ledcom"
+          "url": "https://sentry.io/"
         }
       ]
     ],
