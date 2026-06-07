@@ -59,7 +59,9 @@
       [
         "@sentry/react-native/expo",
         {
-          "url": "https://sentry.io/"
+          "url": "https://sentry.io/",
+          "project": "finvez",
+          "organization": "brian-marquez"
         }
       ]
     ],
